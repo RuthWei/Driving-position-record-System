@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC329CBC1C20090E0094FB0E /* fileOperation.c in Sources */ = {isa = PBXBuildFile; fileRef = BC329CBB1C20090E0094FB0E /* fileOperation.c */; };
+		BC329CBE1C2012300094FB0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CBD1C2012300094FB0E /* CoreGraphics.framework */; };
+		BC329CC01C2012450094FB0E /* CalendarStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CBF1C2012450094FB0E /* CalendarStore.framework */; };
+		BC329CC21C20125F0094FB0E /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CC11C20125F0094FB0E /* QuickTime.framework */; };
+		BC329CC41C2013AE0094FB0E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CC31C2013AE0094FB0E /* CFNetwork.framework */; };
 		BC5346F91C1ADD2100AD81F8 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5346F81C1ADD2100AD81F8 /* main.c */; };
 		BC5347011C1ADD5B00AD81F8 /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5346FF1C1ADD5B00AD81F8 /* list.c */; };
 /* End PBXBuildFile section */
@@ -24,6 +29,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC329CBB1C20090E0094FB0E /* fileOperation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileOperation.c; sourceTree = "<group>"; };
+		BC329CBD1C2012300094FB0E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BC329CBF1C2012450094FB0E /* CalendarStore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CalendarStore.framework; path = System/Library/Frameworks/CalendarStore.framework; sourceTree = SDKROOT; };
+		BC329CC11C20125F0094FB0E /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
+		BC329CC31C2013AE0094FB0E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		BC5346F51C1ADD2100AD81F8 /* DrivingPositionRecordSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DrivingPositionRecordSystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC5346F81C1ADD2100AD81F8 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		BC5346FF1C1ADD5B00AD81F8 /* list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = list.c; sourceTree = "<group>"; };
@@ -35,6 +45,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC329CC41C2013AE0094FB0E /* CFNetwork.framework in Frameworks */,
+				BC329CC21C20125F0094FB0E /* QuickTime.framework in Frameworks */,
+				BC329CC01C2012450094FB0E /* CalendarStore.framework in Frameworks */,
+				BC329CBE1C2012300094FB0E /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +58,10 @@
 		BC5346EC1C1ADD2100AD81F8 = {
 			isa = PBXGroup;
 			children = (
+				BC329CC31C2013AE0094FB0E /* CFNetwork.framework */,
+				BC329CC11C20125F0094FB0E /* QuickTime.framework */,
+				BC329CBF1C2012450094FB0E /* CalendarStore.framework */,
+				BC329CBD1C2012300094FB0E /* CoreGraphics.framework */,
 				BC5346F71C1ADD2100AD81F8 /* DrivingPositionRecordSystem */,
 				BC5346F61C1ADD2100AD81F8 /* Products */,
 			);
@@ -61,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				BC5346F81C1ADD2100AD81F8 /* main.c */,
+				BC329CBB1C20090E0094FB0E /* fileOperation.c */,
 				BC5346FF1C1ADD5B00AD81F8 /* list.c */,
 				BC5347001C1ADD5B00AD81F8 /* list.h */,
 			);
@@ -124,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC5346F91C1ADD2100AD81F8 /* main.c in Sources */,
+				BC329CBC1C20090E0094FB0E /* fileOperation.c in Sources */,
 				BC5347011C1ADD5B00AD81F8 /* list.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +261,7 @@
 				BC5346FE1C1ADD2100AD81F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
