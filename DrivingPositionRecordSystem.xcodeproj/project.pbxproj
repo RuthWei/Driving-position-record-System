@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BC329CBC1C20090E0094FB0E /* fileOperation.c in Sources */ = {isa = PBXBuildFile; fileRef = BC329CBB1C20090E0094FB0E /* fileOperation.c */; };
-		BC329CBE1C2012300094FB0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CBD1C2012300094FB0E /* CoreGraphics.framework */; };
-		BC329CC01C2012450094FB0E /* CalendarStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CBF1C2012450094FB0E /* CalendarStore.framework */; };
-		BC329CC21C20125F0094FB0E /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CC11C20125F0094FB0E /* QuickTime.framework */; };
-		BC329CC41C2013AE0094FB0E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC329CC31C2013AE0094FB0E /* CFNetwork.framework */; };
 		BC5346F91C1ADD2100AD81F8 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5346F81C1ADD2100AD81F8 /* main.c */; };
-		BC5347011C1ADD5B00AD81F8 /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5346FF1C1ADD5B00AD81F8 /* list.c */; };
+		BC5347011C1ADD5B00AD81F8 /* RWList.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5346FF1C1ADD5B00AD81F8 /* RWList.c */; };
+		BC5F4A961C210004001305D0 /* RWMenu.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5F4A941C210004001305D0 /* RWMenu.c */; };
+		BC5F4A991C210603001305D0 /* RWFunction.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5F4A971C210603001305D0 /* RWFunction.c */; };
+		BC5F4AB21C215085001305D0 /* RWFileOperation.c in Sources */ = {isa = PBXBuildFile; fileRef = BC5F4AB01C215085001305D0 /* RWFileOperation.c */; };
+		BC80C9E91C22459B00C2D1B5 /* RWGps.c in Sources */ = {isa = PBXBuildFile; fileRef = BC80C9E71C22459B00C2D1B5 /* RWGps.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,15 +28,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		BC329CBB1C20090E0094FB0E /* fileOperation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileOperation.c; sourceTree = "<group>"; };
 		BC329CBD1C2012300094FB0E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BC329CBF1C2012450094FB0E /* CalendarStore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CalendarStore.framework; path = System/Library/Frameworks/CalendarStore.framework; sourceTree = SDKROOT; };
-		BC329CC11C20125F0094FB0E /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
-		BC329CC31C2013AE0094FB0E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		BC5346F51C1ADD2100AD81F8 /* DrivingPositionRecordSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DrivingPositionRecordSystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC5346F81C1ADD2100AD81F8 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		BC5346FF1C1ADD5B00AD81F8 /* list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = list.c; sourceTree = "<group>"; };
-		BC5347001C1ADD5B00AD81F8 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
+		BC5346FF1C1ADD5B00AD81F8 /* RWList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RWList.c; sourceTree = "<group>"; };
+		BC5347001C1ADD5B00AD81F8 /* RWList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWList.h; sourceTree = "<group>"; };
+		BC5F4A941C210004001305D0 /* RWMenu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RWMenu.c; sourceTree = "<group>"; };
+		BC5F4A951C210004001305D0 /* RWMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWMenu.h; sourceTree = "<group>"; };
+		BC5F4A971C210603001305D0 /* RWFunction.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RWFunction.c; sourceTree = "<group>"; };
+		BC5F4A981C210603001305D0 /* RWFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWFunction.h; sourceTree = "<group>"; };
+		BC5F4AB01C215085001305D0 /* RWFileOperation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RWFileOperation.c; sourceTree = "<group>"; };
+		BC5F4AB11C215085001305D0 /* RWFileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWFileOperation.h; sourceTree = "<group>"; };
+		BC80C9E71C22459B00C2D1B5 /* RWGps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RWGps.c; sourceTree = "<group>"; };
+		BC80C9E81C22459B00C2D1B5 /* RWGps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWGps.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,10 +49,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC329CC41C2013AE0094FB0E /* CFNetwork.framework in Frameworks */,
-				BC329CC21C20125F0094FB0E /* QuickTime.framework in Frameworks */,
-				BC329CC01C2012450094FB0E /* CalendarStore.framework in Frameworks */,
-				BC329CBE1C2012300094FB0E /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,8 +58,6 @@
 		BC5346EC1C1ADD2100AD81F8 = {
 			isa = PBXGroup;
 			children = (
-				BC329CC31C2013AE0094FB0E /* CFNetwork.framework */,
-				BC329CC11C20125F0094FB0E /* QuickTime.framework */,
 				BC329CBF1C2012450094FB0E /* CalendarStore.framework */,
 				BC329CBD1C2012300094FB0E /* CoreGraphics.framework */,
 				BC5346F71C1ADD2100AD81F8 /* DrivingPositionRecordSystem */,
@@ -79,9 +77,16 @@
 			isa = PBXGroup;
 			children = (
 				BC5346F81C1ADD2100AD81F8 /* main.c */,
-				BC329CBB1C20090E0094FB0E /* fileOperation.c */,
-				BC5346FF1C1ADD5B00AD81F8 /* list.c */,
-				BC5347001C1ADD5B00AD81F8 /* list.h */,
+				BC5F4AB11C215085001305D0 /* RWFileOperation.h */,
+				BC5F4AB01C215085001305D0 /* RWFileOperation.c */,
+				BC5F4A981C210603001305D0 /* RWFunction.h */,
+				BC5F4A971C210603001305D0 /* RWFunction.c */,
+				BC5F4A951C210004001305D0 /* RWMenu.h */,
+				BC5F4A941C210004001305D0 /* RWMenu.c */,
+				BC5347001C1ADD5B00AD81F8 /* RWList.h */,
+				BC5346FF1C1ADD5B00AD81F8 /* RWList.c */,
+				BC80C9E81C22459B00C2D1B5 /* RWGps.h */,
+				BC80C9E71C22459B00C2D1B5 /* RWGps.c */,
 			);
 			path = DrivingPositionRecordSystem;
 			sourceTree = "<group>";
@@ -142,9 +147,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC80C9E91C22459B00C2D1B5 /* RWGps.c in Sources */,
+				BC5F4A991C210603001305D0 /* RWFunction.c in Sources */,
+				BC5F4A961C210004001305D0 /* RWMenu.c in Sources */,
 				BC5346F91C1ADD2100AD81F8 /* main.c in Sources */,
-				BC329CBC1C20090E0094FB0E /* fileOperation.c in Sources */,
-				BC5347011C1ADD5B00AD81F8 /* list.c in Sources */,
+				BC5F4AB21C215085001305D0 /* RWFileOperation.c in Sources */,
+				BC5347011C1ADD5B00AD81F8 /* RWList.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
