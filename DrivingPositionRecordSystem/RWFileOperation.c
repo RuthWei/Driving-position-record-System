@@ -11,7 +11,8 @@
 #include "RWFileOperation.h"
 //存放车辆行驶信息的文件使用频繁，所以，打开后，在线程结束时再关闭
 FILE * fpCarPositionRecord;
-
+long len = 0;
+long curFileSize = 0;
 //车辆信息登记：车牌号，私家车还是公共车，
 int carInfoRecord(carInfo_s * carInfo)
 {
@@ -76,19 +77,94 @@ int carInfoRead(carInfo_s * carInfo)
  函数名：carGpsRecordRead
  函数功能：打开文件，读取文件内容，把文件内容存放到链表里
  函数返回值：
- 返回1,表示旧数据读完；返回－1,出错，返回其它值，都要继续进行读
+ 返回1,表示数据读完；返回－1,出错，返回其它值，都要继续进行读
  函数参数：
  NODE * head表示链表头
- long start表示读取的启始位置
- start=-1上次读取出错
- start=0第一次读取
- start=1旧数据读到一半/新数据读到一半
- start>1旧数据读完，直接读新数据
+ int * state//当前读取的状态
  */
-long carGpsRecordRead(NODE * head, long start)
+int carGpsRecordRead1(NODE * head, int * state)
 {
-    GPS gpsInfo;
-    long len = 0;
+    GPS position;
+    NODE * p = NULL;
+    
+    if (!head) {
+        return -1;
+    }
+    //读出文件开头保存的数据
+    if (INIT_STATUS == * state){
+        //获取文件的大小
+        fseek(fpCarPositionRecord, 0, SEEK_END);
+        curFileSize = ftell(fpCarPositionRecord);
+        if (curFileSize == 0) {
+            * state = NEWDATA_FINISHED;
+            printf("亲，您的记录仪还未曾使用过!\n");
+            return 1;
+        }
+        rewind(fpCarPositionRecord);
+        fread(&len, sizeof(long), 1, fpCarPositionRecord);
+    }
+    p = head->next;
+    count = 0;
+    //读取文件信息保存在链表里
+    while (!feof(fpCarPositionRecord)
+           && p != NULL
+           && p != head
+           //&& len != ftell(fpCarPositionRecord)
+           ){
+        size_t ret = 0;
+        ret = fread(&position, sizeof(GPS), 1, fpCarPositionRecord);
+        if (ferror(fpCarPositionRecord)){
+            //读取错误，返回-1
+            *state = READ_ERROR;
+            return -1;
+        }
+        /*
+         else if (feof(fpCarPositionRecord))
+         {
+         //新数据读完了
+         * state = NEWDATA_FINISHED;
+         return 1;
+         }
+         else if (ret == 0){
+         return 0;//??
+         }
+         */
+        memcpy(&(p->position),&position,sizeof(position));
+        p = p->next;
+        count++;//记录本次读了几个结点的数据
+    }
+    
+    //链表满了
+    if (p == head) {
+        //文件读完了
+        if (feof(fpCarPositionRecord)) {
+            *state = NEWDATA_FINISHED;
+        }
+        else{
+            *state = NEWDATA_UNFINISHED;
+        }
+        //链表读满了
+        return 1;
+    }
+    
+    if (feof(fpCarPositionRecord))
+    {
+        //新数据读完了
+        * state = NEWDATA_FINISHED;
+        return 1;
+    }
+    
+    if (!p) {
+        *state = READ_ERROR;
+        return -1;//文件读取出错了
+    }
+    return 0;
+
+    
+}
+int carGpsRecordRead(NODE * head, int * state)
+{
+    GPS position;
     NODE * p = NULL;
     
     if (!head) {
@@ -100,54 +176,175 @@ long carGpsRecordRead(NODE * head, long start)
     }
     
     //读出文件开头保存的数据
-    fread(&len, sizeof(long), 1, fpCarPositionRecord);
-    if (-1 == start) {
-        //上次读取出错
-        fseek(fpCarPositionRecord, len, SEEK_SET);
+    if (INIT_STATUS == * state){
+        //获取文件的大小
+        fseek(fpCarPositionRecord, 0, SEEK_END);
+        curFileSize = ftell(fpCarPositionRecord);
+        if (curFileSize == 0) {
+            * state = NEWDATA_FINISHED;
+            printf("亲，您的记录仪还未曾使用过!\n");
+            return 1;
+        }
+        rewind(fpCarPositionRecord);
+        fread(&len, sizeof(long), 1, fpCarPositionRecord);
     }
-    else if (0 == start)
-    {
-        //第一次读取，先跳转到旧数据位置，先读旧数据
-        fseek(fpCarPositionRecord, len, SEEK_SET);
+//    printf("len = %ld, filesize=%ld\n",len, curFileSize);
+    //如果当前len的大小和文件的大小是一样的，说明当前文件的所有数据都是最新数据，并且按时间的先后从文件开头一直到文件结尾，只需要从头读到尾就可以了
+    if (len == curFileSize) {
+        switch (*state) {
+            case INIT_STATUS:
+                //跳到新数据的起始位置
+//                fseek(fpCarPositionRecord, sizeof(len), SEEK_SET);
+                //开始读数据
+                
+                break;
+            case NEWDATA_UNFINISHED:
+                break;
+            default:
+                break;
+        }
+        goto READ_A;
     }
-    else if (start > 1)
-    {
-        //旧数据读到一半/新数据读到一半
-        fseek(fpCarPositionRecord, start, SEEK_SET);
+    else if (len < curFileSize){
+        switch (* state) {
+            case INIT_STATUS:
+                //跳到新数据的起始位置
+                fseek(fpCarPositionRecord, (len), SEEK_SET);
+                //从旧数据开始读
+                goto READ_B;
+                break;
+            case OLDDATA_FINISHED:
+                fseek(fpCarPositionRecord, sizeof(len), SEEK_SET);
+                goto READ_B;
+            case OLDDATA_UNFINISHED:
+                goto READ_B;
+                break;
+            default:
+                break;
+        }
     }
-    else if (1 == start){
-        //旧数据读完，直接读新数据
+    else{
+        return -1;
     }
-    
+
+READ_A:
     p = head->next;
     count = 0;
     //读取文件信息保存在链表里
     while (!feof(fpCarPositionRecord)
         && p != NULL
-        && p != head){
-        if (!fread(&gpsInfo, sizeof(GPS), 1, fpCarPositionRecord)){
+        && p != head
+        //&& len != ftell(fpCarPositionRecord)
+           ){
+        size_t ret = 0;
+        ret = fread(&position, sizeof(GPS), 1, fpCarPositionRecord);
+        if (ferror(fpCarPositionRecord)){
             //读取错误，返回-1
+            *state = READ_ERROR;
             return -1;
         }
-        memcpy(&(p->position),&gpsInfo,sizeof(gpsInfo));
+        /*
+        else if (feof(fpCarPositionRecord))
+        {
+            //新数据读完了
+            * state = NEWDATA_FINISHED;
+            return 1;
+        }
+        else if (ret == 0){
+            return 0;//??
+        }
+        */
+        memcpy(&(p->position),&position,sizeof(position));
         p = p->next;
         count++;//记录本次读了几个结点的数据
     }
     
+    //链表满了
     if (p == head) {
+        //文件读完了
+        if (feof(fpCarPositionRecord)) {
+            *state = NEWDATA_FINISHED;
+        }
+        else{
+            *state = NEWDATA_UNFINISHED;
+        }
         //链表读满了
-        return ftell(fpCarPositionRecord);
+        return 1;
     }
     
-    //文件读完了
-    if (feof(fpCarPositionRecord)) {
+    if (feof(fpCarPositionRecord))
+    {
+        //新数据读完了
+        * state = NEWDATA_FINISHED;
         return 1;
     }
     
     if (!p) {
+        *state = READ_ERROR;
         return -1;//文件读取出错了
     }
     return 0;
+READ_B:
+    p = head->next;
+    count = 0;
+    //读取文件信息保存在链表里
+    while (!feof(fpCarPositionRecord)
+           && p != NULL
+           && p != head
+           //&& len != ftell(fpCarPositionRecord)
+           ){
+        size_t ret = 0;
+        ret = fread(&position, sizeof(GPS), 1, fpCarPositionRecord);
+        if (ferror(fpCarPositionRecord)){
+            //读取错误，返回-1
+            *state = READ_ERROR;
+            return -1;
+        }
+        memcpy(&(p->position),&position,sizeof(position));
+        p = p->next;
+        count++;//记录本次读了几个结点的数据
+    }
+    
+    //链表满了
+    if (p == head) {
+        //文件读完了
+        if (feof(fpCarPositionRecord)) {
+            *state = OLDDATA_FINISHED;
+        }
+        else{
+            //文件没有读完
+            if (*state == OLDDATA_UNFINISHED
+            ||  *state == INIT_STATUS) {
+                //正在读旧数据
+                *state = OLDDATA_UNFINISHED;
+            }
+            else {
+                //正在读新数据
+                *state = NEWDATA_UNFINISHED;
+            }
+        }
+        //链表读满了
+        return 1;
+    }
+    
+    if (feof(fpCarPositionRecord))
+    {
+        //新数据读完了
+        * state = NEWDATA_FINISHED;
+        return 1;
+    }
+    
+    if (len <= ftell(fpCarPositionRecord)
+    && *state == NEWDATA_UNFINISHED) {
+        *state = NEWDATA_FINISHED;
+        return 1;
+    }
+    if (!p) {
+        *state = READ_ERROR;
+        return -1;//文件读取出错了
+    }
+    return 0;
+
 }
 //打开文件，该文件保存的是车辆gps信息
 int createFileRecordGps()
@@ -175,7 +372,7 @@ int createFileRecordGps()
 void saveData(NODE * head)
 {
     NODE * cur;
-    long len = 0;
+    long curWriteLen = 0;
     //如果文件还没有打开
     if(!fpCarPositionRecord)
     {
@@ -186,27 +383,37 @@ void saveData(NODE * head)
         {
             fpCarPositionRecord = fopen(DRIVERRECORD_PATH,"w+");
         }
-        fwrite(&len,sizeof(long),1,fpCarPositionRecord );
+        fwrite(&curWriteLen,sizeof(long),1,fpCarPositionRecord );
     }
     //跳转到文件的开头
     rewind(fpCarPositionRecord );
     //文件的最前面存放前面有多少数据最新的，这些数据之后就是老数据
-    fread(&len,sizeof(int),1,fpCarPositionRecord );
-    //跳转到旧数据的位置
-    fseek(fpCarPositionRecord ,len,SEEK_CUR);
+    fread(&curWriteLen,sizeof(curWriteLen),1,fpCarPositionRecord );
+    //跳转到旧数据的位置,即将要写的数据要覆盖旧数据，保证文件中的数据都是最新的
+    if (curWriteLen > 0){
+        rewind(fpCarPositionRecord);
+        fseek(fpCarPositionRecord ,curWriteLen,SEEK_SET);
+    }
+    else
+    {
+        //把0写到文件中，只为了一会在这个位置保存写入的大小
+        fwrite(&curWriteLen, sizeof(curWriteLen), 1, fpCarPositionRecord);
+    }
     cur=head;
-    while(cur != NULL && count >= 0)
+    
+    while(cur != NULL && count > 0)
     {
         //把链表中数据全部写到文件中
-        fwrite(cur,sizeof(NODE),1,fpCarPositionRecord );
+        fwrite(&(cur->position),sizeof(GPS),1,fpCarPositionRecord );
         cur=cur->next;
         count--;
     }
     
-    len = ftell(fpCarPositionRecord);
+    curWriteLen = ftell(fpCarPositionRecord);
+    printf("%ld\n",ftell(fpCarPositionRecord));
+    if(curWriteLen > FILE_SIZE)
+        curWriteLen = sizeof(curWriteLen);
     rewind(fpCarPositionRecord);
-    if(len > FILE_SIZE)
-        len = 0;
-    fwrite(&len,sizeof(long),1,fpCarPositionRecord );
+    fwrite(&curWriteLen,sizeof(long),1,fpCarPositionRecord );
     fflush(fpCarPositionRecord);
 }

@@ -16,9 +16,23 @@
 #include "RWList.h"
 
 #define FILE_SIZE 8192
+//读取文件的初始状态
+#define INIT_STATUS 0x00
+//新数据已经读完,也就是文件全部读完
+#define NEWDATA_FINISHED (0x01)
+//新数据读了一半
+#define NEWDATA_UNFINISHED (0x02)
+//旧数据全部读完
+#define OLDDATA_FINISHED (0x04)
+//旧数据读了一半
+#define OLDDATA_UNFINISHED (0x08)
+//读取文件失败
+#define READ_ERROR 0x10
 
 //存放车辆行驶信息的文件使用频繁，所以，打开后，在线程结束时再关闭
 extern FILE * fpCarPositionRecord;
+extern long len;
+extern long curFileSize;
 
 //车辆信息登记：车牌号，私家车还是公共车，
 int carInfoRecord(carInfo_s * carInfo);
@@ -33,13 +47,9 @@ int createFileRecordGps();
  返回1,表示旧数据读完；返回－1,出错，返回其它值，都要继续进行读
  函数参数：
  NODE * head表示链表头
- long start表示读取的启始位置
- start=-1上次读取出错
- start=0第一次读取
- start=1旧数据读到一半/新数据读到一半
- start>1旧数据读完，直接读新数据
+ int * state//当前读取数据的状态
  */
-long carGpsRecordRead(NODE * head, long start);
+int carGpsRecordRead(NODE * head, int * state);
 
 //保存数据
 void saveData(NODE * head);

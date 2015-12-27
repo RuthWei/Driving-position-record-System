@@ -8,7 +8,6 @@
 
 #include "RWFunction.h"
 #include "RWList.h"
-#include "RWTime.h"
 #include "RWFileOperation.h"
 #include "RWGps.h"
 //
@@ -63,7 +62,8 @@ void prepareWork()
 //根据选择进行相应的操作
 void doSomething(int choice)
 {
-    long ret = 0;
+    int ret = 0;
+    int state = INIT_STATUS;
     NODE * p = head->next;
     NODE * lastTimeNode = p;
     count = 0;
@@ -71,10 +71,11 @@ void doSomething(int choice)
     switch (choice) {
         case displayRecord:
             carInfoShow(&carInfo);
-            ret = carGpsRecordRead(head, 0);
-            while (ret != -1) {
+            ret = carGpsRecordRead(head, &state);
+            while (ret != -1
+            && NEWDATA_FINISHED != state) {
                 showList(head);
-                ret = carGpsRecordRead(head, ret);
+                ret = carGpsRecordRead(head, &state);
             }
             showList(head);
             break;
@@ -109,8 +110,14 @@ void doSomething(int choice)
                         break;
                     }
 #endif
+                    //break;//
                 }
                 p = p->next;
+                if (feof(fpGPS)) {
+                    saveData(lastTimeNode);
+                    printf("gps file end\n");
+                    return ;
+                }
             }
         default:
             break;
@@ -119,7 +126,8 @@ void doSomething(int choice)
 //    pthread_mutex_destroy(&lock);
     //close(fdGPS);
     
-    printf("======   Game   over    =======\n");
+END:
+    printf("==========    end    =======\n");
 }
 
 void carInfoShow(carInfo_s * carInfo)

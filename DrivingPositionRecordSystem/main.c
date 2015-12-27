@@ -25,14 +25,7 @@ void delay()
     }
 }
 int main(int argc, const char * argv[]) {
-    // insert code here...
-//    far putpixel(200,200, 2);
-//    line(0, 0, 200, 200);
-//    refresh();
-//    erase();
-//    clear();
 
-//    carInfo_s carInfo;
     int choice = 0;
     prepareWork();
     operateMenu();

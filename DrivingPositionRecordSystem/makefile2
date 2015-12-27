@@ -1,0 +1,20 @@
+obj = fileOperation.o list.o  main.o menu.o function.o gps.o
+
+all:$(obj)
+	gcc $(obj) -o all
+
+main.o : main.c
+	gcc -c main.c
+list.o: RWList.c RWList.h
+	gcc -c RWList.c RWList.h -o list.o
+menu.o: RWMenu.c
+	gcc -c RWMenu.c RWMenu.h -o menu.o
+function.o: RWFunction.c RWFunction.h
+	gcc -c RWFunction.c RWFunction.h menu.h list.h -o function.o
+fileOperation.o: RWFileOperation.c
+	gcc -c RWFileOperation.c RWFileOperation.h -o fileOperation.o
+gps.o: RWGps.h RWGps.c
+	gcc -c RWGps.h RWGps.c -o gps.o
+
+clean:
+	rm -f *.o *.txt
