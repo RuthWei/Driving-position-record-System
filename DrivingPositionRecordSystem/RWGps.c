@@ -39,6 +39,7 @@ int openGPS()
     if(!fpGPS)
     {
         perror("ERROR");
+        exit(1);
         return 0;
     }
 #endif
